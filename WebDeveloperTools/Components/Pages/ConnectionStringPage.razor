@@ -1,0 +1,57 @@
+﻿@page "/connectionstring"
+@using Services.Interface
+@using WebDeveloperTools.Shared
+@inject IConnectionStringService service
+@rendermode InteractiveServer
+
+<div class="row mb-3">
+    <div class="col text-center">
+        <h2>JR SS Gerador de connection string</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <input type="text" class="form-control" placeholder="Servidor" @bind-value="model.Server" />
+    </div>
+    <div class="col">
+        <input type="text" class="form-control" placeholder="Banco de dados " @bind-value="model.Database" />
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col">
+        <input type="text" class="form-control" placeholder="Usuário" @bind-value="model.Username" />
+    </div>
+    <div class="col">
+        <input type="text" class="form-control" placeholder="Senha" @bind-value="model.Password" />
+    </div>
+    <div class="col">
+        <input type="checkbox" class="form-check-input" @bind-value="model.IsSecureConnection" />
+        <label class="form-check-label">A conexão é confiável</label>
+    </div>
+</div>
+
+<div class="row mt-3 container">
+    <div class="col text-center">
+        <button class="btn btn-primary" @onclick="GenerateString">Gerar</button>
+
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(ConnectionString))
+{
+    <div class="row mt-3 text-center">
+        <div class="col">
+            @ConnectionString
+        </div>
+    </div>
+}
+@code{
+    private ConnectionStringModel model = new ConnectionStringModel();
+    private string ConnectionString;
+    private void GenerateString(){
+        ConnectionString = service.GetConnectionString(model);
+    }
+}
+
